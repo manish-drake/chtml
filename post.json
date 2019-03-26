@@ -1,0 +1,12 @@
+{
+    "type":"posts",
+    "file":"posts.json",
+    "action":"insert"
+}
+@>>>@
+{
+    "title": "SQLite-API",
+    "dtPost": "09 March, 2019",
+    "author": "unknown",
+    "para":"The library helps serialize or deserialize a C++ class using SQLite in the backend. Its usage is simple and yet it helps the user avoid all details related to the database operations. Serializing or deserializing data is an internal feature of many applications and handling the same using SQLite involves writing DDL and DML  "
+}   
