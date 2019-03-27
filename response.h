@@ -1,6 +1,7 @@
 #ifndef RESPONSE_H
 #define RESPONSE_H
 #include <string>
+#include "log.h"
 
 using std::string;
 
@@ -24,6 +25,7 @@ class Response
         UNUSED(title);
         return "";
     }
+    bool doAppendLogs = false;
 
   public:
     void setTitle(const string &title)
@@ -36,8 +38,19 @@ class Response
     }
     string toString()
     {
-        return m_contentType + m_allowHeaders + m_cors + head(m_title) + m_body;
+        if (doAppendLogs)
+        {
+            return m_contentType + m_allowHeaders + m_cors + m_body + app::logger()->toString();
+        }
+        else
+        {
+            return m_contentType + m_allowHeaders + m_cors + m_body;
+        }
+    }
+    void AppendLogs()
+    {
+        doAppendLogs = true;
     }
 };
 
-#endif//RESPONSE_H
+#endif //RESPONSE_H

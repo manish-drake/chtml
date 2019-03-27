@@ -11,55 +11,67 @@ using std::endl;
 
 using std::string;
 
+const char *DELIM = "@>>>@";
 
 class Request
 {
     string m_message;
     Header m_header;
+    Response m_response;
+
   public:
-    Request(const string &request) 
+    Request(const string &request)
     {
         try
         {
-            auto it = request.find("@>>>@");
+            auto it = request.find(DELIM);
             if (it > request.size())
             {
                 struct excp : public std::exception
                 {
+                    string m_req;
+                    excp(const string &req) : m_req{req}
+                    {
+                    }
                     const char *what() const noexcept override
                     {
-                        return "Ill-formed header.";
+                        return "Ill-formed header1.";
                     }
-                } e;
+                } e(request);
                 throw e;
             }
             string hdrStr(request.begin(), request.begin() + it);
             m_header.setMessage(request);
-            
 
             m_message = string(request.begin() + it + 6, request.end());
-
-
-            
         }
         catch (const std::exception &e)
         {
-            Response resp;
-            resp.setBody(e.what());
-            cout << resp.toString();
+            m_response.setBody(e.what());
         }
     }
 
     Response GetResponse()
     {
-        Response response;
-        if(m_header.getType() == "Posts")
+        switch (m_header.getType())
+        {
+        case TypeEnum::POSTS:
         {
             Posts posts;
             string result = posts.execute(m_header.getAction(), m_message);
-            response.setBody(result);
+            m_response.setBody(result);
         }
-        return response;
+        break;
+        case TypeEnum::POST:
+        {
+        }
+        break;
+
+        default:
+            break;
+        }
+
+        return m_response;
     }
 };
 

@@ -20,24 +20,40 @@ class Posts : public TypeBase
         psts.push_back(newPost);
         write("posts", psts);
     }
+
   public:
-    string execute(const string &action, const string &message) override
+    string execute(const int &action, const string &message) override
     {
-        if (action == "insert")
+        switch (action)
+        {
+        case ActionEnum::GET:
+        {
+        }
+        break;
+        case ActionEnum::INSERT:
         {
             Post pst;
             pst.setMessage(message);
 
             insert(pst);
-
-            ofstream ofsPosts("./posts.json");
+            app::logger()->log(Level::Info, "Saving to the disk");
+            ofstream ofsPosts("/home/manish/git/chtml/json/posts.json");
             ofsPosts << getMessage();
             ofsPosts.close();
         }
-        if(action == "get")
+        break;
+        case ActionEnum::SAVE:
         {
-            
         }
+        break;
+        case ActionEnum::DELETE:
+        {
+        }
+        break;
+        default:
+            break;
+        }
+
         return getMessage();
     }
 };

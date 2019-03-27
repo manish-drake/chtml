@@ -1,38 +1,31 @@
 #include "typeheader.h"
-Header::Header()
+
+int Header::getAction() const
 {
+    return mReadRoot["action"].asInt();
 }
 
-Header::~Header()
-{
-}
-
-string Header::getAction()
-{
-    return mReadRoot["action"].asString();
-}
-
-void Header::setAction(string action)
+void Header::setAction(const int &action)
 {
     mWriteRoot["action"] = action;
 }
 
-string Header::getFile()
+string Header::getFile() const
 {
     return mReadRoot["file"].asString();
 }
 
-void Header::setFile(string file)
+void Header::setFile(const string &file)
 {
     mWriteRoot["file"] = file;
 }
 
-string Header::getType()
+int Header::getType() const
 {
-    return mReadRoot["type"].asString();
+    return mReadRoot["type"].asInt();
 }
 
-void Header::setType(string type)
+void Header::setType(const int &type)
 {
     mWriteRoot["type"] = type;
 }

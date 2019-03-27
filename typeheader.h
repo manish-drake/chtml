@@ -2,19 +2,15 @@
 #define HEADER_H
 #include "typebase.h"
 
-
 class Header : public TypeBase
 {
 
-  public:
-    Header();
-    ~Header();
-
-    string getAction();
-    void setAction(string action);
-    string getFile();
-    void setFile(string file);
-    string getType();
-    void setType(string type);
+public:
+  int getAction() const;
+  void setAction(const int &action);
+  string getFile() const;
+  void setFile(const string &file);
+  int getType() const;
+  void setType(const int &type);
 };
 #endif //HEADER_H

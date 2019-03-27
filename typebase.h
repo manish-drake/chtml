@@ -5,6 +5,20 @@
 using std::string;
 
 #define UNUSED(x) (void)(x)
+enum TypeEnum
+{
+    HEADER = 0,
+    POST = 1,
+    POSTS = 2
+};
+enum ActionEnum
+{
+    GET = 0,
+    INSERT = 1,
+    SAVE,
+    DELETE
+};
+
 class TypeBase
 {
   protected:
@@ -16,6 +30,10 @@ class TypeBase
     Json::Value mWriteRoot;
 
   public:
+    int typeId() const
+    {
+        return mReadRoot["typeId"].asInt();
+    }
     std::string getMessage(void)
     {
         return mWriter.write(mWriteRoot);
@@ -67,7 +85,7 @@ class TypeBase
         }
         return arr;
     }
-    virtual string execute(const string &action, const string &message)
+    virtual string execute(const int &action, const string &message)
     {
         UNUSED(action);
         UNUSED(message);

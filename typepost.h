@@ -44,6 +44,33 @@ class Post : public TypeBase
     {
         return mReadRoot["para"].asString();
     }
+
+    string execute(const int &action, const string &message) override
+    {
+        switch (action)
+        {
+        case ActionEnum::GET:
+        {
+        }
+        break;
+        case ActionEnum::INSERT:
+        {
+        }
+        break;
+        case ActionEnum::SAVE:
+        {
+        }
+        break;
+        case ActionEnum::DELETE:
+        {
+        }
+        break;
+        default:
+            break;
+        }
+
+        return getMessage();
+    }
 };
 
 #endif //POST_H
