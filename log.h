@@ -2,7 +2,9 @@
 #define LOG_H
 #include <cstdarg>
 #include <vector>
+#include <string>
 
+using std::string;
 using std::vector;
 enum Level
 {
@@ -66,5 +68,4 @@ class app
         return logs;
     }
 };
-app app::m_log;
 #endif // LOG_H

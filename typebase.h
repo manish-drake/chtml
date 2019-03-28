@@ -1,6 +1,7 @@
 #ifndef TYPEBASE_H
 #define TYPEBASE_H
 #include <string>
+#include "log.h"
 #include <json.h>
 using std::string;
 
@@ -60,6 +61,7 @@ class TypeBase
     {
         mReadRoot = obj;
     }
+
     template <typename ArrayType>
     void write(char const* name, std::vector<ArrayType>& arr)
     {
@@ -70,6 +72,7 @@ class TypeBase
         for(typename std::vector<ArrayType>::iterator it = arr.begin(); it != arr.end(); ++it)
         {            
             mWriteRoot[name].append(it->get());
+            app::logger()->log(Level::Info, "write module in typebase:%s", it->getTitle().c_str());
         }
     }
 
@@ -80,11 +83,14 @@ class TypeBase
         auto jsonArr =  mReadRoot[name];
         for(auto &elem: jsonArr)
         {
-            ArrayType tp();
-            arr.push_back(tp.set(elem));
+            ArrayType tp;
+            tp.set(elem);
+            app::logger()->log(Level::Info, "Old post Title:%s", tp.getTitle().c_str());
+            arr.push_back(tp);
         }
         return arr;
     }
+    
     virtual string execute(const int &action, const string &message)
     {
         UNUSED(action);
