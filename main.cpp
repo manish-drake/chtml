@@ -5,7 +5,9 @@
 #include "typeheader.h"
 #include "response.h"
 #include "request.h"
-#include "log.h"
+#include "logger.h"
+#include "loggerc.h"
+#include "loggerf.h"
 
 using std::cin;
 using std::cout;
@@ -23,17 +25,19 @@ static string readRequest()
     string request;
     const char *lenStr = getenv("CONTENT_LENGTH");
     int len = -1;
+    Logger::Instance()->Log(Level::Info, "main", "Content length: %i", len);
     if (lenStr && (len = atoi(lenStr)) != 0)
     {
-        app::logger()->log(Level::Info, "CONTENT_LENGTH: %i", len);
+        Logger::Instance()->Log(Level::Info, "main", "Content length: %i", len);
         char postData[len + 1] = {0};
         postData[len] = '\n';
         char buffer[len] = {0};
 
         while (fgets(buffer, len + 1, stdin))
         {
-            request.append(buffer); 
+            request.append(buffer);
         }
+        Logger::Instance()->Log(Level::Info, "main", "request: %s", request.c_str());
         /*Save to watch for request received*/
         ofstream ofs("/home/manish/git/chtml/post1.json");
         ofs << postData;
@@ -63,6 +67,10 @@ int main(int argc, char *argv[])
 {
     UNUSED(argc);
     UNUSED(argv);
+
+    Logger::Instance()->Add(new LoggerF);
+    Logger::Instance()->Log(Level::Info, "main", "Initialize Log");
+
     string request;
     const char *isDebug = getenv("debug");
     if (isDebug)
@@ -78,14 +86,12 @@ int main(int argc, char *argv[])
     {
         Response response;
         response.setBody("{}");
-        response.AppendLogs();
         cout << response.toString();
     }
     else
     {
         Request req(request);
         Response response = req.GetResponse();
-        response.AppendLogs();
         cout << response.toString();
     }
 

@@ -29,3 +29,20 @@ void Header::setType(const int &type)
 {
     mWriteRoot["type"] = type;
 }
+
+int Header::getMax() const
+{
+    return mReadRoot["max"].asInt();
+}
+void Header::setMax(const int &max)
+{
+    mWriteRoot["max"] = max;
+}
+string Header::getId() const
+{
+    return mReadRoot["id"].asString();
+}
+void Header::setId(const string &id)
+{
+    mWriteRoot["id"] = id;
+}

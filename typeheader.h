@@ -12,5 +12,9 @@ public:
   void setFile(const string &file);
   int getType() const;
   void setType(const int &type);
+  int getMax() const;
+  void setMax(const int &max);
+  string getId() const;
+  void setId(const string &id);
 };
 #endif //HEADER_H

@@ -1,7 +1,7 @@
 #ifndef TYPEBASE_H
 #define TYPEBASE_H
 #include <string>
-#include "log.h"
+#include "logger.h"
 #include <json.h>
 using std::string;
 
@@ -10,16 +10,18 @@ enum TypeEnum
 {
     HEADER = 0,
     POST = 1,
-    POSTS = 2
+    POSTS = 2,
+    BLOGPOST = 3,
+    BLOGCOMMENT = 4
 };
 enum ActionEnum
 {
     GET = 0,
     INSERT = 1,
-    SAVE,
-    DELETE
+    SAVE = 2,
+    DELETE = 3
 };
-
+class Header;
 class TypeBase
 {
   protected:
@@ -29,6 +31,14 @@ class TypeBase
     Json::FastWriter mWriter;
     Json::Value mReadRoot;
     Json::Value mWriteRoot;
+    string getNewId()
+    {
+        time_t t = time(nullptr);
+        tm *ltm = localtime(&t);
+        char buffer[32] = {0};
+        strftime(buffer, 32, "%Y%m%d%H%M%S", ltm);
+        return string(buffer);
+    }
 
   public:
     int typeId() const
@@ -71,8 +81,7 @@ class TypeBase
         //Need "typename" before "std::vector<arrayType>" because the compiler says it is needed
         for(typename std::vector<ArrayType>::iterator it = arr.begin(); it != arr.end(); ++it)
         {            
-            mWriteRoot[name].append(it->get());
-            app::logger()->log(Level::Info, "write module in typebase:%s", it->getTitle().c_str());
+            mWriteRoot[name].append(it->get());            
         }
     }
 
@@ -85,15 +94,14 @@ class TypeBase
         {
             ArrayType tp;
             tp.set(elem);
-            app::logger()->log(Level::Info, "Old post Title:%s", tp.getTitle().c_str());
             arr.push_back(tp);
         }
         return arr;
     }
     
-    virtual string execute(const int &action, const string &message)
+    virtual string execute(const Header &header, const string &message)
     {
-        UNUSED(action);
+        UNUSED(header);
         UNUSED(message);
         return "{}";
     }

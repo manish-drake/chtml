@@ -5,6 +5,16 @@
 class Post : public TypeBase
 {
   public:
+    inline void setId(const string &id)
+    {
+        mWriteRoot["id"] = id;
+    }
+
+    inline string getId()
+    {
+        return mReadRoot["id"].asString();
+    }
+
     inline void setTitle(const string &title)
     {
         mWriteRoot["title"] = title;
@@ -45,9 +55,11 @@ class Post : public TypeBase
         return mReadRoot["para"].asString();
     }
 
-    string execute(const int &action, const string &message) override
+    string execute(const Header &header, const string &message) override
     {
-        switch (action)
+        UNUSED(header);
+        UNUSED(message);
+        switch (header.getAction())
         {
         case ActionEnum::GET:
         {

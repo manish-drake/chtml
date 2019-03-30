@@ -1,12 +1,10 @@
 {
-    "type":2,
-    "file":"posts.json",
-    "action":1
+    "type":3,
+    "action":2
 }
 @>>>@
 {
-    "title": "Corrected - SQLite - API",
-    "dtPost": "09 March, 2018",
-    "author": "unknown",
-    "para":"The library helps serialize or deserialize a C++ class using SQLite in the backend. Its usage is simple and yet it helps the user avoid all details related to the database operations. Serializing or deserializing data is an internal feature of many applications and handling the same using SQLite involves writing DDL and DML  "
+    "url": "http://drake.in/blog/20190330010039.html",
+    "postId": "20190330010039",
+    "comments":[]
 }   
