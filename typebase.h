@@ -2,7 +2,7 @@
 #define TYPEBASE_H
 #include <string>
 #include "logger.h"
-#include <json.h>
+#include "json.h"
 using std::string;
 
 #define UNUSED(x) (void)(x)
@@ -31,81 +31,19 @@ class TypeBase
     Json::FastWriter mWriter;
     Json::Value mReadRoot;
     Json::Value mWriteRoot;
-    string getNewId()
-    {
-        time_t t = time(nullptr);
-        tm *ltm = localtime(&t);
-        char buffer[32] = {0};
-        strftime(buffer, 32, "%Y%m%d%H%M%S", ltm);
-        return string(buffer);
-    }
+    string getNewId();    
 
   public:
-    int typeId() const
-    {
-        return mReadRoot["typeId"].asInt();
-    }
-    std::string getMessage(void)
-    {
-        return mWriter.write(mWriteRoot);
-    }
-
-    void setMessage(std::string str)
-    {
-        if (mReader.parse(str, mReadRoot, false))
-        {
-            mReadValid = true;
-        }
-        else
-        {
-            mReadValid = false;
-        }
-    }
-
-    Json::Value get(void)
-    {
-        return mWriteRoot;
-    }
-
-    void set(Json::Value obj)
-    {
-        mReadRoot = obj;
-    }
-
+    int typeId() const;
+    std::string getMessage(void); 
+    void setMessage(std::string str);
+    Json::Value get(void);
+    void set(Json::Value obj);
     template <typename ArrayType>
-    void write(char const* name, std::vector<ArrayType>& arr)
-    {
-
-        mWriteRoot[name]=Json::arrayValue;
-
-        //Need "typename" before "std::vector<arrayType>" because the compiler says it is needed
-        for(typename std::vector<ArrayType>::iterator it = arr.begin(); it != arr.end(); ++it)
-        {            
-            mWriteRoot[name].append(it->get());            
-        }
-    }
-
+    void write(char const* name, std::vector<ArrayType>& arr);
     template <typename ArrayType>
-    std::vector<ArrayType> read(char const* name)
-    {
-        std::vector<ArrayType> arr;
-        auto jsonArr =  mReadRoot[name];
-        for(auto &elem: jsonArr)
-        {
-            ArrayType tp;
-            tp.set(elem);
-            arr.push_back(tp);
-        }
-        return arr;
-    }
-    
-    virtual string execute(const Header &header, const string &message)
-    {
-        UNUSED(header);
-        UNUSED(message);
-        return "{}";
-    }
-
+    std::vector<ArrayType> read(char const* name);    
+    virtual string execute(const Header &header, const string &message);
 };
 
 
