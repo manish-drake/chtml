@@ -36,3 +36,6 @@
 
 # The script file
 vscode.sh
+
+# Log files
+*.log

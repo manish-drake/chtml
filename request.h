@@ -44,7 +44,7 @@ class Request
             string hdrStr(request.begin(), request.begin() + it);
             m_header.setMessage(request);
 
-            m_message = string(request.begin() + it + 6, request.end());
+            m_message = string(request.begin() + it + 5, request.end());
         }
         catch (const std::exception &e)
         {

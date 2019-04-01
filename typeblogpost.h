@@ -71,10 +71,13 @@ class BlogPost : public TypeBase
             newBlogPost.setPostId(getPostId());
             Logger::Instance()->Log(Level::Info, "blogpost", "postId: %s", getPostId().c_str());
             vector<BlogComment> oldComments = getComments();
+            Logger::Instance()->Log(Level::Info, "blogpost", "old comments count: %i", oldComments.size());
             vector<BlogComment> newComments;
 
             BlogComment messageComment;
             messageComment.setMessage(message);
+            Logger::Instance()->Log(Level::Info, "blogpost", "message: %s", message.c_str());
+            Logger::Instance()->Log(Level::Info, "blogpost", "new comment: %s", messageComment.getComment().c_str());
 
             BlogComment newComment;
             newComment.setName(messageComment.getName());
