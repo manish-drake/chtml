@@ -51,6 +51,7 @@ class BlogPost : public TypeBase
         {
             char fileName[128] = {0};
             sprintf(fileName, "/home/manish/git/chtml/json/blogpost_%s.json", header.getId().c_str());
+            Logger::Instance()->Log(Level::Info, "blogpost", "Fetching blog: %s", fileName);
             ifstream strm(fileName);
             std::string str((std::istreambuf_iterator<char>(strm)),
                             std::istreambuf_iterator<char>());
