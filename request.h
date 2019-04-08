@@ -12,8 +12,6 @@ using std::endl;
 
 using std::string;
 
-const char *DELIM = "@>>>@";
-
 class Request
 {
     string m_message;

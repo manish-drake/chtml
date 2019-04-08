@@ -38,34 +38,7 @@ string TypeBase::getNewId()
     void TypeBase::set(Json::Value obj)
     {
         mReadRoot = obj;
-    }
-
-    template <typename ArrayType>
-    void TypeBase::write(char const* name, std::vector<ArrayType>& arr)
-    {
-
-        mWriteRoot[name]=Json::arrayValue;
-
-        //Need "typename" before "std::vector<arrayType>" because the compiler says it is needed
-        for(typename std::vector<ArrayType>::iterator it = arr.begin(); it != arr.end(); ++it)
-        {            
-            mWriteRoot[name].append(it->get());            
-        }
-    }
-
-    template <typename ArrayType>
-    std::vector<ArrayType> TypeBase::read(char const* name)
-    {
-        std::vector<ArrayType> arr;
-        auto jsonArr =  mReadRoot[name];
-        for(auto &elem: jsonArr)
-        {
-            ArrayType tp;
-            tp.set(elem);
-            arr.push_back(tp);
-        }
-        return arr;
-    }
+    }   
     
     string TypeBase::execute(const Header &header, const string &message)
     {

@@ -5,16 +5,16 @@
 class Post : public TypeBase
 {
   public:
-    inline void setId(const string &id);
-    inline string getId();
-    inline void setTitle(const string &title);
-    inline string getTitle() const;
-    inline void setDtPost(const string &dtPost);
-    inline string getDtPost() const;
-    inline void setAuthor(const string &author);
-    inline string getAuthor() const;
-    inline void setPara(const string &para);
-    inline string getPara() const;
+    void setId(const string &id);
+    string getId();
+    void setTitle(const string &title);
+    string getTitle() const;
+    void setDtPost(const string &dtPost);
+    string getDtPost() const;
+    void setAuthor(const string &author);
+    string getAuthor() const;
+    void setPara(const string &para);
+    string getPara() const;
     string execute(const Header &header, const string &message) override;
     
 };

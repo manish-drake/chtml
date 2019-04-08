@@ -7,8 +7,10 @@
 #include "typeposts.h"
 #include "typeblogpost.h"
 
+const char *DELIM = "@>>>@";
+
 Request::Request()
-{}
+{} 
 Request::Request(const string &request)
     {
         try
