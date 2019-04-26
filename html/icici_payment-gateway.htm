@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>ICICI Payment Gateway</title>
+    <style>
+        BODY,
+        P,
+        TD {
+            font-family: Verdana, Arial, Helvetica, sans-serif;
+            font-size: 10pt
+        }
+
+        H2,
+        H3,
+        H4,
+        H5 {
+            color: #ff9900;
+            font-weight: bold;
+        }
+
+        H2 {
+            font-size: 13pt;
+        }
+
+        H3 {
+            font-size: 12pt;
+        }
+
+        H4 {
+            font-size: 10pt;
+            color: black;
+        }
+
+        PRE {
+            BACKGROUND-COLOR: #FBEDBB;
+            FONT-FAMILY: "Courier New", Courier, mono;
+            WHITE-SPACE: pre;
+        }
+
+        CODE {
+            COLOR: #990000;
+            FONT-FAMILY: "Courier New", Courier, mono;
+        }
+    </style>
+    <link type="text/css" rel="stylesheet"
+        href="https://codeproject.global.ssl.fastly.net/App_Themes/CodeProject/Css/Main.min.css">
+</head>
+
+<body color="#000000" bgcolor="#FFFFFF">
+    <p>&nbsp;</p>
+    <h1>ICICI Payment Gateway Integration in ASP.NET C#</h1>
+    <h2>Introduction</h2>
+    <p> The purpose of this article is to show how payments processing can be organized to support reliability and
+        security. The article is also aimed at providing you with an example of the development of a simple online payment,
+        in order to demonstrate interaction with the First Data Payment Gateway system.
+        You can use the code in your applications to organize interaction with this system and to process payments.
+        The article is based on the experience of Drake Software Services and the official ICICI Payment Gateway documentation.
+    </p>
+
+    <h2>Payment Process</h2>
+    <p>The payment process is very simple. A POST form is created with a set of hidden fields that contain information
+        about
+        storename(your merchant-id), currency, chargetotal(amount), language and a button to send the form. When the
+        form is sent,
+        the buyer goes to the First Data ICICI Merchant Services site and finishes the payment process. </p>
+
+    <h3>Using the Code</h3>
+    <p> A code of the simplest form in <code>request.aspx</code></p>
+    <pre>
+            &ltform method="post"  runat="server">
+                        &ltdiv>
+                            &ltlabel>Name&ltspan class="text-red">*&lt/span> &lt/label>
+                        &ltdiv>
+                                &ltasp:TextBox id="Name" runat="server" name="billing_name" type="text"/>
+                        &lt/div>
+                        &lt/div>
+
+                        &ltdiv>
+                            &ltlabel>Mobile No&ltspan class="text-red">*&lt/span> &lt/label>
+                        &ltdiv>
+                                &ltasp:TextBox runat="server" ID="MobileNo" name="billing_tel" type="number"/>
+                        &lt/div>
+                        &lt/div>
+
+                        &ltdiv>
+                            &ltlabel>Email ID&ltspan class="text-red">*&lt/span>&lt/label>
+                        &ltdiv>
+                                &ltasp:TextBox ID="EmailID" name="billing_email" type="email" runat="server" />
+                        &lt/div>
+                        &lt/div>
+
+                        &ltdiv>
+                            &ltlabel>Address &ltspan class="text-red">*&lt/span>&lt/label>
+                        &ltdiv>
+                                &ltasp:TextBox TextMode="multiline" runat="server" ID="Address" name="billing_address" Rows="2" />
+                        &lt/div>
+                        &lt/div>
+
+                        &ltdiv>
+                            &ltlabel>Zip code &ltspan class="text-red">*&lt/span>&lt/label>
+                        &ltdiv>
+                                &ltasp:TextBox runat="server" ID="ZipCode" name="billing_zip"/>
+                        &lt/div>
+                        &lt/div>
+
+                        &ltdiv>
+                        &ltlabel>Country &ltspan class="text-red">*&lt/span>&lt/label>
+                        &ltdiv>
+                                &ltasp:TextBox runat="server" ID="Country" name="billing_city" type="text" />                            
+                        &lt/div>
+                        &lt/div>  
+                        
+                        &ltdiv>
+                        &ltlabel>State &ltspan class="text-red">*&lt/span>&lt/label>
+                        &ltdiv>
+                                &ltasp:TextBox runat="server" ID="State" name="billing_city" type="text" />                            
+                        &lt/div>
+                        &lt/div>   
+
+                        &ltdiv>
+                        &ltlabel>City &ltspan class="text-red">*&lt/span>&lt/label>
+                        &ltdiv>
+                                &ltasp:TextBox runat="server" ID="City" name="billing_city" type="text" />                            
+                        &lt/div>
+                        &lt/div>                  
+                   
+                        &ltdiv>
+                        &ltlabel>Amount&ltspan class="text-red">*&lt/span> &lt/label>
+                        &ltdiv>
+                                &ltasp:TextBox runat="server" ID="chargetotal" name="amount" type="number" />
+                        &lt/div>
+                        &lt/div>
+                        &ltdiv>
+                        &ltlabel>Currency &ltspan class="text-red">*&lt/span> &lt/label>
+                        &ltdiv>
+                                &ltasp:DropDownList runat="server" name="CurrencyId" ID="currencycode" >
+                                &ltasp:ListItem >&lt/asp:ListItem>
+                                &ltasp:ListItem Value="896">GBP&lt/asp:ListItem>
+                                &ltasp:ListItem Value="356">INR&lt/asp:ListItem>                                
+                                &lt/asp:DropDownList>
+                        &lt/div>
+                        &lt/div> 
+                        &ltdiv>
+                            &ltdiv>
+                                &ltinput ID="btnSend" runat="server" Text="Submit" onclick="btnSend_Click">
+                            &lt/div>
+                        &lt/div>
+                &lt/form>
+
+                &lt;asp:Literal ID="ltrForm" runat="server" Mode="PassThrough">&lt;/asp:Literal>
+                &lt;asp:Literal ID="ltrScript" runat="server" Mode="PassThrough">&lt;/asp:Literal>
+    </pre>
+
+    <h3>C# Code</h3> 
+    <p>Sending request to server in <code>request.aspx.cs</code></p>
+    <pre>
+            protected void btnSend_Click(object sender, EventArgs e)
+            {   
+                
+                Session["name"] = Name.Text;
+                Session["mobileno"] = MobileNo.Text;
+                Session["emailid"] = EmailID.Text;
+                Session["address"] = Address.Text;
+                Session["zipcode"] = ZipCode.Text;
+                Session["city"] = City.Text;
+                Session["state"] = State.text;
+                Session["country"] = Country.Text;
+                Session["chargetotal"] = chargetotal.Text;
+                Session["remarks"] = Remarks.Text;
+                Session["currencycode"] = currencycode.SelectedValue; //values stored in session to save/show it later.
+
+                string formCode = 
+                            "&lt;form id=\"{0}\" name=\"{0}\" method=\"post\" action=\"{1}\"&gt;" +
+                             "&lt;input type=\"hidden\" name=\"txntype\" value=\"sale\"&gt;" +
+                             "&lt;input type=\"hidden\" name=\"timezone\" value=\"IST\"/&gt;" +
+                             "&lt;input type=\"hidden\" name=\"txndatetime\" value=\"{2}\"/&gt;" +
+                             "&lt;input type=\"hidden\" name=\"hash\" value=\"{3}\"/&gt;" +
+                             "&lt;input type=\"hidden\" name=\"storename\" value=\"{4}\" /&gt;" +
+                             "&lt;input type=\"hidden\" name=\"mode\" value=\"payonly\"/&gt;" +
+                             "&lt;input type=\"hidden\" name=\"currency\" value=\"{5}\" /&gt;" +
+                             "&lt;input type=\"hidden\" name=\"chargetotal\" value=\"{6}\"/&gt;" +
+                             "&lt;input type=\"hidden\" name=\"language\" value=\"en_EN\"/&gt;" +
+                             "&lt;input type=\"hidden\" name=\"authenticateTransaction\" value=\"true\"/&gt;" +
+                             "&lt;input type=\"hidden\" name=\"responseFailURL\" value=\"http://192.168.xx.x:80/projectname/response_fail.aspx\"/&gt;" + //need to change as per merchant ip/url
+                             "&lt;input type=\"hidden\" name=\"responseSuccessURL\" value=\"http://192.168.xx.x:80/projectname/response_success.aspx\"/&gt;" + //need to change as per merchant ip/url
+                             "&lt;/form&gt;";
+    
+                string formScript = "&lt;script language=\"javascript\" type=\"text/javascript\"&gt;" +
+                               "document.getElementById('{0}').submit();" +
+                               "&lt;/script&gt;";
+    
+                string formName = "form1";
+                string formAction = "https://www4.ipg-online.com/connect/gateway/processing";
+                string storename = this.storename.Text;
+                string txndatetime = DateTime.Now.ToString(@"yyyy\:MM\:dd-HH\:mm\:ss");
+                string chargetotal = this.chargetotal.Text;
+                string sharedsecret = "your shared secret value"
+                string currency = this.currency.SelectedValue.ToString();
+                string data = storename + txndatetime + chargetotal + currency + sharedsecret;
+                string hash = calculateHashFromString(new StringBuilder(data), "SHA1");
+                ltrForm.Text = string.Format(formCode, formName, formAction, txndatetime, hash, storename, currency, chargetotal);
+                ltrScript.Text = string.Format(formScript, formName);
+            }
+      </pre>
+      <p>When the form is submitted, all the hidden set of hidden fields that
+            contain information about storename(unique merchant-id), currency, 
+            chargetotal(amount),language, responseFailURL, responseSuccessURL are concatenated in a string <code>formCode</code>. Here <code>formAction</code> is where the user is redirected to the payment gateway to complete the transaction process,
+            Where in storename you have to insert your unique merchant-id.</p>
+           <p>Similarly, In sharedsecret you have to enter your unique sharedsecret value which will be provided by the merchant.
+            On form submission the literals i.e. <code>ltrForm.Text</code> and <code>ltrScript.Text</code> will send the encrypted request via using hash code to the server and user will be redirected to the <a href="https://www4.ipg-online.com/connect/gateway/processing"> https://www4.ipg-online.com/connect/gateway/processing. </a> </p>
+      <h3>Description of Parameters- </h3>   
+    <table class="table table-bordered">
+            <tr>
+            <th style="background-color: darkgray">Parameter</th>
+            <th style="background-color: darkgray">Description</th>            
+            </tr>
+            <tr>
+            <td>txntype</td>
+            <td>Indicates the type of transaction, such as sale or refund.</td>                       
+            </tr>
+            <tr>
+            <td>timezone</td>
+            <td>It refers to the local time of a region or a country. </td>                       
+            </tr>
+            <tr>
+            <td>txndatetime</td>
+            <td>Time and date of transaction.</td>                       
+            </tr>
+            <tr>
+            <td>hash</td>
+            <td>A unique value of fixed size representing a large amount of data.</td>                       
+            </tr>
+            <tr>
+            <td>storename</td>
+            <td>Your unique merchant-id.</td>                       
+            </tr>
+            <tr>
+            <td>mode</td>
+            <td>Item identifier.</td>                       
+            </tr>
+            <tr>
+            <td>currency</td>
+            <td>Payment currency. Eg- INR/CAD/USD.</td>                       
+            </tr>
+            <tr>
+            <td>chargetotal</td>
+            <td>Order amount.</td>                       
+            </tr>
+            <tr>
+            <td>responseFailURL</td>
+            <td>URL provided when transaction fails.</td>                       
+            </tr>
+            <tr>
+            <td>responseSuccessURL</td>
+            <td>URL provided when transaction succeeds.</td>                       
+            </tr>
+            <tr>
+            <td>sharedsecret</td>
+            <td>Unique value given with the storename/merchant-id. </td>                       
+            </tr>
+            </table>
+            <p>Above table lists the most frequently used parameters. See the Response in <code>response.aspx.cs</code> for the full list of parameters.</p>
+        
+        <h3>Cryptographic hash function </h3>
+        <p>Here function <code>calculateHashFromString</code> uses cryptographic hash function to encrypt the data values. A cryptographic hash function has the property that it is computationally infeasible to find two distinct inputs that hash to the same value.
+             <code>Hash</code> functions are commonly used with digital signatures and for data integrity.</p>
+             <p>The hash is used as a unique value of fixed size representing a large amount of data. Hashes of two sets of data should match if the corresponding data also matches.
+            Small changes to the data result in large unpredictable changes in the hash.</p>
+        <pre>
+            public static String calculateHashFromString(StringBuilder stringValue, String hashAlgorithmName)
+            {
+                HashAlgorithm hashAlgorithm = HashAlgorithm.Create(hashAlgorithmName.Length == 0 ? "SHA1" : hashAlgorithmName);
+        
+                StringBuilder sb = new StringBuilder();
+        
+                byte[] stringValueBytes = Encoding.ASCII.GetBytes(stringValue.ToString());
+        
+                int stringValueBytesLength = stringValueBytes.Length;
+        
+                for (int i = 0; i < stringValueBytesLength; i++)
+                {
+                    sb.Append(forDigit((stringValueBytes[i] & 240) >> 4, 16));
+                    sb.Append(forDigit((stringValueBytes[i] & 15), 16));
+                }
+        
+                stringValueBytes = Encoding.ASCII.GetBytes((new StringBuilder(sb.ToString()).ToString()));
+        
+                hashAlgorithm.TransformFinalBlock(stringValueBytes, 0, stringValueBytes.Length);
+                byte[] hash = hashAlgorithm.Hash;
+                int hashLength = hash.Length;
+        
+                return BitConverter.ToString(hash).Replace("-", "").ToLower();
+            }
+  
+            private static char forDigit(int digit, int radix)
+            {
+                int MIN_RADIX = 2, MAX_RADIX = 36;
+                if ((digit >= radix) || (digit < 0))
+                {
+                    return '\0';
+                }
+                if ((radix < MIN_RADIX) || (radix > MAX_RADIX))
+                {
+                    return '\0';
+                }
+                if (digit < 10)
+                {
+                    return (char)('0' + digit);
+                }
+                return (char)('a' - 10 + digit);
+            }
+    </pre>
+    <h3>Reponse From Server</h3>
+    <p>To store/show information about responses to payment requests, we use the <code>reponse.aspx.cs</code> file having the following structure:</p>
+    <pre>
+            protected void Page_Load(object sender, EventArgs e)
+            {
+                try
+                {
+                    ResponseModel obj = new ResponseModel();
+                    obj.tId = Request.Form["ipgTransactionId"];
+                    obj.approvalCode = Request.Form["approval_code"];
+                    obj.txndateprocessed = Request.Form["txndate_processed"];
+                    obj.timezone = Request.Form["timezone"];
+                    obj.responsehash = Request.Form["response_hash"];
+                    obj.failrc = Request.Form["fail_rc"];
+                    obj.orderId = Request.Form["oid"];
+                    obj.date = Request.Form["tdate"];
+                    obj.installmentsinterest = Request.Form["installments_interest"];
+                    obj.cccountry = Request.Form["cccountry"];
+                    obj.ccbrand = Request.Form["ccbrand"];
+                    sId.Text = obj.status = Request.Form["status"];
+                    obj.name = billing_name.Text = Session["name"].ToString();
+                    obj.tel = billing_tel.Text = Session["mobileno"].ToString();
+                    obj.email = billing_email.Text = Session["emailid"].ToString();
+                    obj.address = billing_address.Text = Session["address"].ToString();
+                    billing_zip.Text = Session["zipcode"].ToString();
+                    obj.zip = billing_zip.Text;
+                    obj.city = billing_city.Text = Session["city"].ToString();
+                    obj.state = billing_state.Text = Session["state"].ToString();
+                    obj.country = billing_country.Text = Session["country"].ToString();                    
+                    amount.Text = Session["chargetotal"].ToString();
+                    obj.amnt = Convert.ToDouble(amount.Text);
+        
+                    if (Request.Form["currency"] == "356")
+                    {
+                        currencycode.Text = "INR";
+                    }
+                    if (Request.Form["currency"] == "896")
+                    {
+                        currencycode.Text = "GBP";
+                    }
+                   
+                    obj.cur = currencycode.Text;
+                    Db(obj); //Saving values in database by passing <code>ReponseModel</code> class
+                }
+                catch { }
+            }
+    </pre>    
+<p>
+    Where...
+    <ul>
+        <li><code>ipgTransactionId</code> is a unique transaction identifier</li>
+        <li><code>approval_code</code> is boolean for payment approval</li>
+        <li><code>txndate_processed</code> is the date and time when transaction is performed</li>
+        <li><code>timezone</code> is the payment amount</li>
+        <li><code>response_hash</code> is the hash code</li>
+        <li><code>oid</code> is the order id</li>
+        <li><code>tdate</code> is the transaction date</li>
+        <li><code>installments_interest</code> is the interest in installments if there are any</li>
+        <li><code>name</code> is the buyer's name</li>
+        <li><code>mobileno</code> is the buyer's number</li>
+        <li><code>emailid</code> is buyer's email address</li>
+        <li><code>address</code>  is buyer's address</li>
+        <li><code>zipcode</code>  is buyer's area zip code</li>
+        <li><code>city</code> is the buyer's city</li>
+        <li><code>state</code> is the buyer's state/li>
+        <li><code>country</code> is the buyer's country</li>
+        <li><code>currency</code> is the buyer's currency</li>
+        <li><code>chargetotal</code> is the payment amount</li>
+        <li><code>status</code> is the transaction succeeded or failed</li>
+    </ul>
+</p>
+<p>To get reponse from the server, <code>Request.Form["variable"]</code> is used. It gets a collection of form variables.
+    The Form property is populated when the HTTP request Content-Type value is either "application/x-www-form-urlencoded" or "multipart/form-data".</p>
+
+    <h3>Saving the Response in DB Using SQLite</h3>    
+    <p>The reponse we got from the server is in the form of model class & it is saved with <code>SQLite</code> database . Generally Models in asp.net  are easy to use
+            if we clear with information
+            like where we want to display data or save input data 
+           from various domain models then always use model class. </p>
+    <pre>
+                public void Db(ResponseModel obj)
+                {
+                    try
+                    {
+                        string localCon = "Data Source=D:\\localdirectory\\localfolder\\databasename.sqlite;Version=3;";
+                        string serverCon = "Data Source=C:\\Inetpub\\vhosts\\domainname\\serverfolder\\databasename.sqlite;Version=3;";
+            
+                        SQLiteConnection m_dbConnection = new SQLiteConnection(serverCon);
+                        m_dbConnection.Open();
+            
+                        string sql = "select * from ResponseDB";
+            
+                        SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+                        command.ExecuteNonQuery();
+            
+                        sql = "insert into ResponseDB (Amount, TransactionId, OrderId, Status, Name, Country, State, City, Address, TransactionDate, ApprovalCode, TransactionDateProcessed, TimeZone, ResponseHash, FailRc, InstallmentIntererst, Currency, Zip, Telephone, Email, CCCountry, CCBrand) values(" +
+                                                       obj.amnt + ",'" + obj.tId + "','" + obj.orderId + "','" + obj.status + "','" + obj.name + "','" + obj.country + "','" + obj.state + "','" + obj.city + "','" + obj.address + "','" + obj.date
+                                                       + "','" + obj.approvalCode + "','" + obj.txndateprocessed + "','" + obj.timezone + "','" + obj.responsehash + "','" + obj.failrc + "','" + obj.installmentsinterest + "','" + obj.cur + "','" + obj.zip + "','" + obj.tel + "','" + obj.email + "','" + obj.cccountry + "','" + obj.ccbrand + "')";
+            
+                        command = new SQLiteCommand(sql, m_dbConnection);
+                        command.ExecuteNonQuery();
+            
+                        m_dbConnection.Close();
+                    }
+                    catch { }
+                }
+        </pre>
+        <p>
+                Here, we have two connections both for the local and server. To test it in locally we can use the
+                <code>localCon</code> for testing purposes and similarly we can use the server connection i.e. <code>serverCon</code> when the project is live.
+        </p>
+        <h3>Response Model Class</h3>
+    <pre>
+                public class ResponseModel
+                {
+                    public string tId { get; set; }
+                    public string orderId { get; set; }
+                    public double amnt { get; set; }
+                    public string status { get; set; }
+                    public string name { get; set; }
+                    public string country { get; set; }
+                    public string state { get; set; }
+                    public string city { get; set; }
+                    public string address { get; set; }
+                    public string date { get; set; }
+                    public string cur { get; set; }
+                    public string zip { get; set; }
+                    public string tel { get; set; }
+                    public string email { get; set; }
+                    public string approvalCode { get; set; }
+                    public string timezone { get; set; }
+                    public string responsehash { get; set; }
+                    public string failrc { get; set; }
+                    public string txndateprocessed { get; set; }
+                    public string cccountry { get; set; }
+                    public string installmentsinterest { get; set; }
+                    public string txndatetime { get; set; }
+                    public string fail_reason { get; set; }
+                    public string ccbrand { get; set; }
+                }
+        </pre>
+        <h3>Client-End Code</h3>
+        <p>You can show the response values in the <code>reponse.aspx</code></p>
+<pre>
+        &lt;form runat="server" class="donation-form">
+                <!--<input name="__RequestVerificationToken" type="hidden" value="vs73xTV-1KsW_du0D-ZTtAxERbE0qkG8-AAehGaY8nxatqTyKwFb267gDxtBqY5122pt7BCurkk1TyTnVSE_327okrdNxxKOhFiqoG5aJBM1">-->
+                &lt;div>
+                &lt;label>Name&lt;/label>
+                &lt;div>
+                &lt;asp:TextBox ID="billing_name" ReadOnly="true" runat="server" data-val="true" name="billing_name" type="text" />
+                &lt;/div>
+                &lt;/div>
+
+                &lt;div>
+                &lt;label>Mobile No&lt;/label>
+                &lt;div>
+                &lt;asp:TextBox ReadOnly="true" runat="server" data-val="true" ID="billing_tel" name="billing_tel" type="number" value="" />
+                &lt;/div>
+                &lt;/div>
+
+                &lt;div>
+                &lt;label>Email ID&lt;/label>
+               
+                &lt;div>
+                &lt;asp:TextBox ReadOnly="true" ID="billing_email" name="billing_email" type="email" value="" runat="server"  />
+                &lt;/div>
+                &lt;/div>
+
+                &lt;div>
+                &lt;label>Address&lt;/label>
+                
+                &lt;div>
+                &lt;asp:TextBox ReadOnly="true" TextMode="multiline" runat="server" cols="20" ID="billing_address" name="billing_address" Rows="2" />
+                &lt;/div>
+                &lt;/div>
+
+                &lt;div>
+                &lt;label>Zip code&lt;/label>
+                &lt;div>
+                &lt;asp:TextBox ReadOnly="true" runat="server" ID="billing_zip" name="billing_zip" />
+                &lt;/div>
+                &lt;/div>
+
+                &lt;div>
+                &lt;label>Country&lt;/label>
+                &lt;div>
+                &lt;asp:TextBox ReadOnly="true"  runat="server" ID="billing_country" name="billing_country" type="text" />
+                &lt;/div>
+                &lt;/div>   
+
+                &lt;div>
+                &lt;label>State&lt;/label>
+                &lt;div>
+                &lt;asp:TextBox ReadOnly="true" runat="server" ID="billing_state" name="billing_state"  type="text" />
+                &lt;/div>
+                &lt;/div>
+
+                &lt;div>
+                &lt;label>City&lt;/label>
+                &lt;div>
+                &lt;asp:TextBox ReadOnly="true" runat="server" ID="billing_city" name="billing_city" type="text" value="" />
+                &lt;/div>
+                &lt;/div>
+
+                &lt;div>
+                &lt;label>Donation&lt;/label>
+                &lt;div>
+                &lt;asp:TextBox  disable="true" ReadOnly="true" runat="server" ID="DonationId" name="DonationId">
+                &lt;/asp:TextBox>
+                &lt;/div>
+                &lt;/div>
+
+                &lt;div>
+                &lt;label>Amount&lt;/label>
+                &lt;div>
+                &lt;asp:TextBox ReadOnly="true" runat="server" ID="amount" name="amount" type="number" />
+                &lt;/div>
+                &lt;/div>
+
+                &lt;div>
+                &lt;label>Currency&lt;/label>
+                &lt;div>
+                &lt;asp:TextBox  disable="true" ReadOnly="true" runat="server" ID="currencycode" name="currencyCode">
+                &lt;/asp:TextBox>
+                &lt;/div>
+                &lt;/div>
+
+                &lt;div>
+                &lt;label>Remarks &lt;/label>
+                &lt;div>
+                &lt;asp:TextBox ReadOnly="true" runat="server" TextMode="multiline" cols="20" ID="billing_notes" name="billing_notes" Rows="2" />
+                &lt;/div>
+                &lt;/div>  
+
+                &lt;div>
+                &lt;label>Status&lt;/label>
+                &lt;div>
+                &lt;asp:TextBox ReadOnly="true" runat="server" ID="sId" />
+                &lt;/div>
+                &lt;/div>                                                            
+        &lt;/form>
+</pre>
+<h3>Use of Source Code</h3>
+<p> To use the code supplied with the article, you need to have .NET Framework 2.0 or higher installed on your system. 
+    You also need to have a real or FirstData ICICI Merchant Services account.
+    No additional requirements should be needed to open a FirstData account.</p>
+
+<h3>History</h3>
+<ul>
+    <li>6th April, 2019    : Original version posted</li>     
+</ul>    
+</body>
+</html>

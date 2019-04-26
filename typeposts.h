@@ -7,7 +7,6 @@
 using std::ifstream;
 using std::ofstream;
 
-
 class Posts : public TypeBase
 {
     string insert(const Post &post);

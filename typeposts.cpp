@@ -14,6 +14,7 @@ string Posts::insert(const Post &post)
         newPost.setDtPost(post.getDtPost());
         newPost.setAuthor(post.getAuthor());
         newPost.setPara(post.getPara());
+        newPost.setURL(post.getURL());
         newPosts.push_back(newPost);
 
         for (auto &oldPost : oldPosts)
@@ -24,6 +25,7 @@ string Posts::insert(const Post &post)
             newPost.setDtPost(oldPost.getDtPost());
             newPost.setAuthor(oldPost.getAuthor());
             newPost.setPara(oldPost.getPara());
+            newPost.setURL(post.getURL());
             newPosts.push_back(newPost);
         }
 
@@ -53,6 +55,7 @@ string Posts::insert(const Post &post)
                     newPost.setDtPost(oldPost.getDtPost());
                     newPost.setAuthor(oldPost.getAuthor());
                     newPost.setPara(oldPost.getPara());
+                    newPost.setURL(oldPost.getURL());
                     maxPosts.push_back(newPost);
                     if (maxPosts.size() >= header.getMax())
                     {

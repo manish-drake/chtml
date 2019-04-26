@@ -52,6 +52,16 @@
         return mReadRoot["para"].asString();
     }
 
+    void Post::setURL(const string &url)
+    {
+        mWriteRoot["url"] = url;
+    }
+
+    string Post::getURL() const
+    {
+        return mReadRoot["url"].asString();
+    }
+
     string Post::execute(const Header &header, const string &message)
     {
         // UNUSED(header);

@@ -15,6 +15,8 @@ class Post : public TypeBase
     string getAuthor() const;
     void setPara(const string &para);
     string getPara() const;
+    void setURL(const string &url);
+    string getURL() const;
     string execute(const Header &header, const string &message) override;
     
 };

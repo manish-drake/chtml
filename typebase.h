@@ -39,10 +39,6 @@ class TypeBase
     void setMessage(std::string str);
     Json::Value get(void);
     void set(Json::Value obj);
-    // template <typename ArrayType>
-    // void write(char const* name, std::vector<ArrayType>& arr);
-    // template <typename ArrayType>
-    // std::vector<ArrayType> read(char const* name);
     virtual string execute(const Header &header, const string &message);
 
     template <typename ArrayType>
