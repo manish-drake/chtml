@@ -10,6 +10,8 @@ using std::ofstream;
 class Posts : public TypeBase
 {
     string insert(const Post &post);
+    string del(const Post &post);     
+    string edit(const Post &post);
   public:
     string execute(const Header &header, const string &message) override;    
 };

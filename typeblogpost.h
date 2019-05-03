@@ -14,6 +14,8 @@ class BlogPost : public TypeBase
   public:
     void setUrl(const string &url);
     string getUrl();
+    void setImageUrl(const string &imageurl);
+    string getImageUrl(); 
     void setPostId(const string &postId);
     string getPostId();   
     void setComments(vector<BlogComment> &comments);

@@ -33,6 +33,68 @@ string Posts::insert(const Post &post)
         return id;
     }
 
+    string Posts::edit(const Post &post)
+    {
+       std::vector<Post> oldPosts = read<Post>("posts");
+
+        string id = post.getId();
+
+        std::vector<Post> newPosts;
+        for (auto &oldPost : oldPosts)
+        {
+            if(id == oldPost.getId())
+            {
+                Post newPost;
+                newPost.setId(post.getId());
+                newPost.setTitle(post.getTitle());
+                newPost.setDtPost(post.getDtPost());
+                newPost.setAuthor(post.getAuthor());
+                newPost.setPara(post.getPara());
+                newPost.setURL(post.getURL());
+                newPosts.push_back(newPost);
+            }
+            else{
+                Post newPost;
+                newPost.setId(oldPost.getId());
+                newPost.setTitle(oldPost.getTitle());
+                newPost.setDtPost(oldPost.getDtPost());
+                newPost.setAuthor(oldPost.getAuthor());
+                newPost.setPara(oldPost.getPara());
+                newPost.setURL(post.getURL());
+                newPosts.push_back(newPost);
+            }
+        }
+
+        write("posts", newPosts);
+        return id;
+    }
+
+    string Posts::del(const Post &post)     
+    {
+        std::vector<Post> oldPosts = read<Post>("posts");
+
+        string id = post.getId();
+
+        std::vector<Post> newPosts;
+        for (auto &oldPost : oldPosts)
+        {
+            if(id != oldPost.getId())
+            {
+                Post newPost;
+                newPost.setId(oldPost.getId());
+                newPost.setTitle(oldPost.getTitle());
+                newPost.setDtPost(oldPost.getDtPost());
+                newPost.setAuthor(oldPost.getAuthor());
+                newPost.setPara(oldPost.getPara());
+                newPost.setURL(post.getURL());
+                newPosts.push_back(newPost);
+            }
+        }
+
+        write("posts", newPosts);
+        return id;
+    }
+
   string Posts::execute(const Header &header, const string &message) 
     {
         switch (header.getAction())
@@ -77,10 +139,8 @@ string Posts::insert(const Post &post)
             std::string str((std::istreambuf_iterator<char>(strm)),
                             std::istreambuf_iterator<char>());
             setMessage(str);
-
             Post pst;
             pst.setMessage(message);
-
             string id = insert(pst);
             ofstream ofsPosts("/home/manish/git/chtml/json/posts.json");
             ofsPosts << getMessage();
@@ -93,8 +153,32 @@ string Posts::insert(const Post &post)
         {
         }
         break;
+        case ActionEnum::EDIT:
+        {
+            ifstream strm("/home/manish/git/chtml/json/posts.json");
+            std::string str((std::istreambuf_iterator<char>(strm)),
+                            std::istreambuf_iterator<char>());
+            setMessage(str);
+            Post pst;
+            pst.setMessage(message);
+            string result = edit(pst);
+            return result;
+
+
+        }
+        break;
         case ActionEnum::DELETE:
         {
+
+            ifstream strm("/home/manish/git/chtml/json/posts.json");
+            std::string str((std::istreambuf_iterator<char>(strm)),
+                            std::istreambuf_iterator<char>());
+            setMessage(str);
+            Post pst;
+            pst.setMessage(message);
+            string result = del(pst);
+            return result;
+
         }
         break;
         default:

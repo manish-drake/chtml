@@ -6,7 +6,7 @@ class Post : public TypeBase
 {
   public:
     void setId(const string &id);
-    string getId();
+    string getId() const;
     void setTitle(const string &title);
     string getTitle() const;
     void setDtPost(const string &dtPost);

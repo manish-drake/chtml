@@ -7,7 +7,7 @@
         mWriteRoot["id"] = id;
     }
 
-    string Post::getId()
+    string Post::getId() const 
     {
         return mReadRoot["id"].asString();
     }

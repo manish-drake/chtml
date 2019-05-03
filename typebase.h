@@ -3,6 +3,7 @@
 #include <string>
 #include "logger.h"
 #include "json.h"
+
 using std::string;
 
 #define UNUSED(x) (void)(x)
@@ -18,8 +19,9 @@ enum ActionEnum
 {
     GET = 0,
     INSERT = 1,
-    SAVE = 2,
-    DELETE = 3
+    SAVE = 2,    
+    DELETE = 3,
+    EDIT = 4
 };
 class Header;
 class TypeBase
@@ -39,12 +41,13 @@ class TypeBase
     void setMessage(std::string str);
     Json::Value get(void);
     void set(Json::Value obj);
+    Json::Reader reader;
+    Json::Value value;
     virtual string execute(const Header &header, const string &message);
 
     template <typename ArrayType>
     void write(char const* name, std::vector<ArrayType>& arr)
     {
-
         mWriteRoot[name]=Json::arrayValue;
 
         //Need "typename" before "std::vector<arrayType>" because the compiler says it is needed
@@ -52,7 +55,7 @@ class TypeBase
         {            
             mWriteRoot[name].append(it->get());            
         }
-    }
+    }  
 
     template <typename ArrayType>
     std::vector<ArrayType> read(char const* name)
