@@ -38,12 +38,6 @@ static string readRequest()
             request.append(buffer);
         }
         Logger::Instance()->Log(Level::Info, "main", "request: %s", request.c_str());
-        /*Save to watch for request received*/
-        ofstream ofs("/home/manish/git/chtml/post1.json");
-        ofs << postData;
-        ofs.close();
-        /*----------------------------------*/
-
         return request;
     }
     else

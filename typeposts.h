@@ -47,7 +47,7 @@ class Posts : public TypeBase
         {
         case ActionEnum::GET:
         {
-            ifstream strm("/home/manish/git/chtml/json/posts.json");
+            ifstream strm("./json/posts.json");
             std::string str((std::istreambuf_iterator<char>(strm)),
                             std::istreambuf_iterator<char>());
             if (header.getMax() > 0)
@@ -80,7 +80,7 @@ class Posts : public TypeBase
         break;
         case ActionEnum::INSERT:
         {
-            ifstream strm("/home/manish/git/chtml/json/posts.json");
+            ifstream strm("./json/posts.json");
             std::string str((std::istreambuf_iterator<char>(strm)),
                             std::istreambuf_iterator<char>());
             setMessage(str);
@@ -89,7 +89,7 @@ class Posts : public TypeBase
             pst.setMessage(message);
 
             string id = insert(pst);
-            ofstream ofsPosts("/home/manish/git/chtml/json/posts.json");
+            ofstream ofsPosts("./json/posts.json");
             ofsPosts << getMessage();
             ofsPosts.close();
 

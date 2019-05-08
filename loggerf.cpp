@@ -12,7 +12,7 @@ LoggerF::LoggerF(const char* logHead)
     char buffer[32];
     strftime(buffer, 32, "%Y%m%d%H.log", ltm);
     char logFile[255] = {0};
-    sprintf(logFile, "/home/manish/git/chtml/log/%s", buffer);
+    sprintf(logFile, "./log/%s", buffer);
     
     m_fp = fopen(logFile, "a");
     this->Log({logHead});
