@@ -5,36 +5,12 @@ class BlogComment: public TypeBase
 {
 private:
     /* data */
-public:
-    
-    inline void setName(const string &name)
-    {
-        mWriteRoot["name"] = name;
-    }
-    
-    inline string getName()
-    {
-        return mReadRoot["name"].asString();
-    }
-    
-    inline void setEmail(const string &email)
-    {
-        mWriteRoot["email"] = email;
-    }
-    
-    inline string getEmail()
-    {
-        return mReadRoot["email"].asString();
-    }
-    
-    inline void setComment(const string &comment)
-    {
-        mWriteRoot["comment"] = comment;
-    }
-    
-    inline string getComment()
-    {
-        return mReadRoot["comment"].asString();
-    }
+public:    
+    void setName(const string &name);    
+    string getName();    
+    void setEmail(const string &email);    
+    string getEmail();    
+    void setComment(const string &comment);    
+    string getComment();
 };
 #endif //BLOGCOMMENT_H

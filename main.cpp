@@ -59,6 +59,8 @@ static string readDRequest()
 
 int main(int argc, char *argv[])
 {
+    std::cout << "testing"<< std::endl <<std::flush;
+
     UNUSED(argc);
     UNUSED(argv);
 

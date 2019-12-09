@@ -20,25 +20,12 @@ class Response
     string m_cors = "Access-Control-Allow-Origin: *\r\n\r\n";
     string m_title = "Lean CGI Server";
     string m_body = "";
-    string head(const string &title)
-    {
-        UNUSED(title);
-        return "";
-    }
+    string head(const string &title);
 
   public:
-    void setTitle(const string &title)
-    {
-        m_title = title;
-    }
-    void setBody(const string &body)
-    {
-        m_body = body;
-    }
-    string toString()
-    {
-        return m_contentType + m_allowHeaders + m_cors + m_body;
-    }
+    void setTitle(const string &title);
+    void setBody(const string &body);
+    string toString();
 };
 
 #endif //RESPONSE_H
