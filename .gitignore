@@ -31,9 +31,11 @@
 *.out
 *.app
 target
+/cgifileupload/target
 
 # Files from build folder
 /build
+/cgifileupload/build
 
 # The script file
 vscode.sh
