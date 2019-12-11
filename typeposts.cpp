@@ -101,7 +101,7 @@ string Posts::insert(const Post &post)
         {
         case ActionEnum::GET:
         {
-            ifstream strm("/home/manish/git/chtml/json/posts.json");
+            ifstream strm("/usr/lib/cgi-bin/json/posts.json");
             std::string str((std::istreambuf_iterator<char>(strm)),
                             std::istreambuf_iterator<char>());
             if (header.getMax() > 0)
@@ -135,14 +135,14 @@ string Posts::insert(const Post &post)
         break;
         case ActionEnum::INSERT:
         {
-            ifstream strm("/home/manish/git/chtml/json/posts.json");
+            ifstream strm("/usr/lib/cgi-bin/json/posts.json");
             std::string str((std::istreambuf_iterator<char>(strm)),
                             std::istreambuf_iterator<char>());
             setMessage(str);
             Post pst;
             pst.setMessage(message);
             string id = insert(pst);
-            ofstream ofsPosts("/home/manish/git/chtml/json/posts.json");
+            ofstream ofsPosts("/usr/lib/cgi-bin/json/posts.json");
             ofsPosts << getMessage();
             ofsPosts.close();
 
@@ -155,7 +155,7 @@ string Posts::insert(const Post &post)
         break;
         case ActionEnum::EDIT:
         {
-            ifstream strm("/home/manish/git/chtml/json/posts.json");
+            ifstream strm("/usr/lib/cgi-bin/json/posts.json");
             std::string str((std::istreambuf_iterator<char>(strm)),
                             std::istreambuf_iterator<char>());
             setMessage(str);
@@ -170,7 +170,7 @@ string Posts::insert(const Post &post)
         case ActionEnum::DELETE:
         {
 
-            ifstream strm("/home/manish/git/chtml/json/posts.json");
+            ifstream strm("/usr/lib/cgi-bin/json/posts.json");
             std::string str((std::istreambuf_iterator<char>(strm)),
                             std::istreambuf_iterator<char>());
             setMessage(str);

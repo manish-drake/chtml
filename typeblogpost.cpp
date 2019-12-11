@@ -53,7 +53,7 @@
         case ActionEnum::GET:
         {
             char fileName[128] = {0};
-            sprintf(fileName, "/home/manish/git/chtml/json/blogpost_%s.json", header.getId().c_str());
+            sprintf(fileName, "/usr/lib/cgi-bin/json/blogpost_%s.json", header.getId().c_str());
             Logger::Instance()->Log(Level::Info, "blogpost", "Fetching blog: %s", fileName);
             ifstream strm(fileName);
             std::string str((std::istreambuf_iterator<char>(strm)),
@@ -64,7 +64,7 @@
         case ActionEnum::INSERT:
         {
             char fileName[128] = {0};
-            sprintf(fileName, "/home/manish/git/chtml/json/blogpost_%s.json", header.getId().c_str());
+            sprintf(fileName, "/usr/lib/cgi-bin/json/blogpost_%s.json", header.getId().c_str());
             ifstream strm(fileName);
             std::string str((std::istreambuf_iterator<char>(strm)),
                             std::istreambuf_iterator<char>());
@@ -117,7 +117,7 @@
             vector<BlogComment> comments = getComments();
             newBlogPost.setComments(comments);
             char fileName[128] = {0};
-            sprintf(fileName, "/home/manish/git/chtml/json/blogpost_%s.json", getPostId().c_str());
+            sprintf(fileName, "/usr/lib/cgi-bin/json/blogpost_%s.json", getPostId().c_str());
             ofstream ofsPosts(fileName);
             ofsPosts << newBlogPost.getMessage();
             ofsPosts.close();
@@ -126,7 +126,7 @@
         case ActionEnum::DELETE:
         {
             char fileName[128] = {0};
-            sprintf(fileName, "/home/manish/git/chtml/json/blogpost_%s.json", header.getId().c_str());
+            sprintf(fileName, "/usr/lib/cgi-bin/json/blogpost_%s.json", header.getId().c_str());
             ifstream strm(fileName);
             std::string str((std::istreambuf_iterator<char>(strm)),
                             std::istreambuf_iterator<char>());
