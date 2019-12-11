@@ -30,7 +30,7 @@
 *.exe
 *.out
 *.app
-target
+/target
 /cgifileupload/target
 
 # Files from build folder
