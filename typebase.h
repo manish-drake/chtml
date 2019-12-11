@@ -3,6 +3,7 @@
 #include <string>
 #include "logger.h"
 #include "json.h"
+#include <memory>
 
 using std::string;
 
@@ -13,7 +14,9 @@ enum TypeEnum
     POST = 1,
     POSTS = 2,
     BLOGPOST = 3,
-    BLOGCOMMENT = 4
+    BLOGCOMMENT = 4,
+    CONTACT = 5,
+    CAREER = 6
 };
 enum ActionEnum
 {
@@ -70,6 +73,8 @@ class TypeBase
         }
         return arr;
     }
+
+    static std::unique_ptr<TypeBase> Create(const int& typeID);
 };
 
 

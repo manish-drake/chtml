@@ -44,6 +44,17 @@
         "ratio": "cpp",
         "thread": "cpp",
         "cinttypes": "cpp",
-        "typeindex": "cpp"
+        "typeindex": "cpp",
+        "string": "cpp",
+        "csignal": "cpp",
+        "complex": "cpp",
+        "list": "cpp",
+        "string_view": "cpp",
+        "algorithm": "cpp",
+        "iterator": "cpp",
+        "map": "cpp",
+        "memory_resource": "cpp",
+        "random": "cpp",
+        "set": "cpp"
     }
 }

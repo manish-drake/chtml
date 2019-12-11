@@ -1,4 +1,10 @@
 #include "typebase.h"
+#include "typepost.h"
+#include "typeposts.h"
+#include "typeblogpost.h"
+#include "typeblogcomment.h"
+#include "typecontact.h"
+#include "typecareer.h"
 
 string TypeBase::getNewId()
     {
@@ -45,4 +51,50 @@ string TypeBase::getNewId()
         UNUSED(header);
         UNUSED(message);
         return "{}";
+    }
+    std::unique_ptr<TypeBase> TypeBase::Create(const int& typeID)
+    {
+        switch (typeID)
+        {
+        case TypeEnum::POSTS:
+        {
+            Logger::Instance()->Log(Level::Info, "typebase", "Executing Posts action");
+            return  std::unique_ptr<TypeBase>(new Posts);
+        }
+        break;
+        case TypeEnum::POST:
+        {
+            Logger::Instance()->Log(Level::Info, "typebase", "Executing Post action");
+            return  std::unique_ptr<TypeBase>(new Posts);
+        }
+        break;
+        case TypeEnum::BLOGPOST:
+        {
+            Logger::Instance()->Log(Level::Info, "typebase", "Executing BlogPost action");
+            return std::unique_ptr<TypeBase>(new BlogPost);
+        }
+        break;
+        case TypeEnum::BLOGCOMMENT:
+        {
+            Logger::Instance()->Log(Level::Info, "typebase", "Executing BlogComment action");
+            return  std::unique_ptr<TypeBase>(new BlogComment);
+        }
+        break;
+        case TypeEnum::CONTACT:
+        {
+            Logger::Instance()->Log(Level::Info, "typebase", "Executing contact action");
+            return  std::unique_ptr<TypeBase>(new Contact);
+        }
+        break;
+        case TypeEnum::CAREER:
+        {
+            Logger::Instance()->Log(Level::Info, "typebase", "Executing career action");
+            return  std::unique_ptr<TypeBase>(new Career);
+        }
+        break;
+        default:
+            return  std::unique_ptr<TypeBase>(new TypeBase);
+            break;
+        }
+
     }

@@ -8,6 +8,9 @@
 #include "logger.h"
 #include "loggerc.h"
 #include "loggerf.h"
+#include <cstring>
+#include "webkitformboundary.h"
+
 
 using std::cin;
 using std::cout;
@@ -18,27 +21,27 @@ using std::ofstream;
 using std::ostringstream;
 using std::string;
 
+
 #define UNUSED(x) (void)(x)
+
+
 
 static string readRequest()
 {
-    string request;
     const char *lenStr = getenv("CONTENT_LENGTH");
     int len = -1;
-    Logger::Instance()->Log(Level::Info, "main", "Content length: %i", len);
+    Logger::Instance()->Log(Level::Info, "main", "Content length: %s", lenStr);
     if (lenStr && (len = atoi(lenStr)) != 0)
     {
         Logger::Instance()->Log(Level::Info, "main", "Content length: %i", len);
-        char postData[len + 1] = {0};
-        postData[len] = '\n';
         char buffer[len] = {0};
-
-        while (fgets(buffer, len + 1, stdin))
+        char postData[len] = {0};
+        while (fgets(buffer, len, stdin))
         {
-            request.append(buffer);
+            strcat(postData, buffer);
         }
-        Logger::Instance()->Log(Level::Info, "main", "request: %s", request.c_str());
-        return request;
+        Logger::Instance()->Log(Level::Info, "main", "request: %s", postData);
+        return postData;
     }
     else
     {
@@ -59,8 +62,6 @@ static string readDRequest()
 
 int main(int argc, char *argv[])
 {
-    std::cout << "testing"<< std::endl <<std::flush;
-
     UNUSED(argc);
     UNUSED(argv);
 
