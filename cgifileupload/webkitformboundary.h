@@ -55,6 +55,10 @@ public:
     {
         return m_filename;
     }
+    std::string GetWebkitFormBoundary()
+    {
+        return m_wfb;
+    }
     ~WebkitFormBoundary() = default;
 };
 #endif //WEBKITFORMBOUNDARY_H

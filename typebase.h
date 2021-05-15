@@ -16,7 +16,8 @@ enum TypeEnum
     BLOGPOST = 3,
     BLOGCOMMENT = 4,
     CONTACT = 5,
-    CAREER = 6
+    CAREER = 6,
+    SUBSCRIBE = 7
 };
 enum ActionEnum
 {

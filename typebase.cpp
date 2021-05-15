@@ -5,6 +5,7 @@
 #include "typeblogcomment.h"
 #include "typecontact.h"
 #include "typecareer.h"
+#include "typesubscribe.h"
 
 string TypeBase::getNewId()
     {
@@ -90,6 +91,12 @@ string TypeBase::getNewId()
         {
             Logger::Instance()->Log(Level::Info, "typebase", "Executing career action");
             return  std::unique_ptr<TypeBase>(new Career);
+        }
+        break;
+        case TypeEnum::SUBSCRIBE:
+        {
+            Logger::Instance()->Log(Level::Info, "typebase", "Executing subscribe action");
+            return  std::unique_ptr<TypeBase>(new Subscribe);
         }
         break;
         default:

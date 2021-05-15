@@ -23,6 +23,7 @@ int main(void)
         {
             if(flag)
             {
+                //TODO:: Implement sliding window method here. No need to store the whole file in memory in a string variable.
                 footer.append(&rawdata[i], 1);
                 if(std::string::npos != footer.find("\r\n------WebKitFormBoundary"))
                 {
